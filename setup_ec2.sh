@@ -2,7 +2,7 @@
 
 DOMAIN_NAME=housestocktrades.com
 APP_PORT=3000
-REPO_URL=https://github.com/yourusername/your-repo.git
+REPO_URL=https://github.com/LoganSullivan05/house-stock-trades.git
 
 sudo apt update && sudo apt upgrade -y
 
