@@ -54,6 +54,7 @@ function parsePDF(file_name, out_name){
   const text_file = out_name || file_name.replace(".pdf", ".txt");
   
   if(!fs.existsSync(text_file)){
+    console.log("Parsing new file: " + file_name);
     child_process.execFileSync("python3", args);
   }
   
@@ -310,6 +311,7 @@ async function scrapeSymbols(){
   ensureDirExistsSync("data/stock_data");
   const symbols = readJSONSync("data/symbols.json");
 
+
   let symbol_errors = readJSONSync("data/symbol_errors.json");
 
   for(let symbol of symbols){
@@ -384,7 +386,7 @@ async function initialize(){
   let downloadAll = true;
   if(pdfs_scraped != 0) downloadAll = false;
   await scrapePDFs(downloadAll);
-
+  
   organizeTransactionsBySymbol();
   organizeTransactionsByPolitician();
   await scrapeSymbols();
