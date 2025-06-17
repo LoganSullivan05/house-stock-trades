@@ -316,7 +316,6 @@ async function scrapeSymbols(){
 
   let symbol_errors = readJSONSync("data/symbol_errors.json");
 
-  //TODO: fetch meta data for new symbols & append it
   for(let symbol of symbols){
     try{
       if(fs.existsSync(`data/stock_data/${symbol}.json`)) continue;
@@ -382,14 +381,18 @@ function organizeTransactionsByPolitician(){
 }
 
 async function initialize(){
-
-
-
   await scrapePDFs(true);
   await scrapeSymbols();
   organizeTransactionsBySymbol();
   organizeTransactionsByPolitician();
 }
+
+// Scrape & parse PDFS
+// await scrapePDFs();
+// await scrapeSymbols();
+// organizeTransactionsBySymbol();
+// organizeTransactionsByPolitician();
+
 
 // const bad_symbol_map = readJSONSync("data/bad_symbol_map.json");
 // function correctSymbol(symbol){
@@ -402,56 +405,3 @@ async function initialize(){
 
 // await getSymbolMetaData();
 
-// Scrape & parse PDFS
-// await scrapePDFs();
-// await scrapeSymbols();
-// organizeTransactionsBySymbol();
-// organizeTransactionsByPolitician();
-
-// const symbol_data = readJSONSync("data/symbol_data.json");
-// const symbol_errors = readJSONSync("data/symbol_errors.json");
-
-// let transactions_missed = 0;
-// let money_unaccounted = 0;
-
-// symbol_errors.forEach(symbol => {
-//   const transactions_length = symbol_data[symbol].length;
-//   if(correctSymbol(symbol)) return;
-//   console.log(symbol);
-  
-//   symbol_data[symbol].forEach(transaction => {
-//     money_unaccounted += transaction.buy_amount || 0;
-//   });
-
-//   transactions_missed += transactions_length;
-// });
-
-// console.log("Transactions missed: "+transactions_missed);
-// console.log("Money unaccounted for: "+money_unaccounted);
-
-/*
-
-ORIGINAL:
-Transactions missed: 6093
-Money unaccounted for: 167280092
-
-NEW:
-Transactions missed: 3457
-Money unaccounted for: 121130456
-
-*/
-
-
-/*
-symbol anomolies (no mkt cap or assets): [
-  'SRCL',   'SPWR',   'MLPN',  
-  'SEMG',   'TMH',    'ARMH',  
-  'SBMRY',  'CJNK',   'BUNT',  
-  'TTFS',   'RSCO',   'DNO',   
-  'QCGLIX', 'QCGRIX', 'QCSTIX',
-  'QREARX', 'CIU',    'RPT',   
-  'KPLTW',  'AXHE',   'AXTE',  
-  'HTZWW',  'VIASP',  'OZKAP', 
-  'ITIP',   'SMCY',   'MHVIY'  
-]
-*/

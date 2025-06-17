@@ -160,7 +160,6 @@ app.get('/api/stocks/:symbol', async (req, res) => {
     res.json(stock_data);
 });
 
-// Serve politician trades by symbol
 app.get('/api/trades/:symbol', (req, res) => {
 	const symbol = req.params.symbol.toUpperCase();
 
@@ -186,7 +185,6 @@ app.get('/api/list/stocks/:time_range', (req, res) => {
 
 	const { symbol_keys, frequencies } = symbol_frequency_times[time_range];
 
-	// Get start/end from query (default to top 100)
 	const start = parseInt(req.query.start) || 0;
 	const end = parseInt(req.query.end) || 100;
 
@@ -232,7 +230,7 @@ app.get('/api/politician/:insider', (req, res) => {
 	if(!trades_raw){
 		return res.status(404).json({ error: 'Politician not found' });
 	}
-	//! returns less trades than it should if symbol isnt converted (ex. BRK.B stored as BRK-B)
+
 	const trades = trades_raw.filter(trade => {
 		return symbols[trade.symbol];
 	});
@@ -247,17 +245,4 @@ app.listen(port, () => {
 	console.log(`Stock tracker API running at http://localhost:${port}`);
 });
 
-
-//TODO: be better than 2IQ
-// - organize by commitees and sub-commitees
-
-//TODO:
-// - fix last edge case on cleanInsiderName (norto n)
-// - correct old symbols (FB -> META)
-// - add ads (ad space on index.html)
-// - buy website
-
-// politicianstocktracker.com
-// politicianstocktrades.com
-// housestocktrades.com
 
