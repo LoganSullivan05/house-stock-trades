@@ -55,7 +55,7 @@ function parsePDF(file_name, out_name){
   const text_file = out_name || file_name.replace(".pdf", ".txt");
   
   if(!fs.existsSync(text_file)){
-    child_process.execFileSync("python", args);
+    child_process.execFileSync("python3", args);
   }
   
   const text = fs.readFileSync(text_file).toString();

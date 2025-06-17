@@ -10,13 +10,20 @@ curl -o- https://raw.githubusercontent.com/nvm-sh/nvm/v0.39.7/install.sh | bash
 export NVM_DIR="$HOME/.nvm"
 source "$NVM_DIR/nvm.sh"
 
+echo 'export NVM_DIR="$HOME/.nvm"' >> ~/.bashrc
+echo '[ -s "$NVM_DIR/nvm.sh" ] && \. "$NVM_DIR/nvm.sh"' >> ~/.bashrc
+echo '[ -s "$NVM_DIR/bash_completion" ] && \. "$NVM_DIR/bash_completion"' >> ~/.bashrc
+source ~/.bash_profile
+
+ln -s "$NVM_DIR/versions/node/$(nvm version)/bin/node" /usr/local/bin/node
+ln -s "$NVM_DIR/versions/node/$(nvm version)/bin/npm" /usr/local/bin/npm
+
 nvm install 18
 nvm use 18
 nvm alias default 18
 
 npm install
 
-# Install required packages
 sudo yum install -y nginx firewalld git python3-certbot-nginx
 
 echo "Configuring firewall..."
