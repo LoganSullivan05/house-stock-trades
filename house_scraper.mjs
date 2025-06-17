@@ -303,6 +303,7 @@ async function scrapePDFs(downloadAll){
   fs.writeFileSync("data/house_trade_data.json", JSON.stringify(files));
   const total_transactions = toTransactions(files);
   writeLargeJSONArray("data/transactions.json", total_transactions);
+  return total_transactions;
 }
 
 async function scrapeSymbols(){
@@ -334,8 +335,8 @@ async function scrapeSymbols(){
   fs.writeFileSync("data/symbol_errors.json", JSON.stringify(symbol_errors));
 }
 
-function organizeTransactionsBySymbol(){
-  const transactions = readJSONSync("data/transactions.json");
+function organizeTransactionsBySymbol(transactions){
+  if(!transactions) transactions = readJSONSync("data/transactions.json");
   let symbols = {};
 
   transactions.forEach(transaction => {
@@ -359,8 +360,8 @@ function organizeTransactionsBySymbol(){
 }
 
 
-function organizeTransactionsByPolitician(){
-  const transactions = readJSONSync("data/transactions.json");
+function organizeTransactionsByPolitician(transactions){
+  if(!transactions) transactions = readJSONSync("data/transactions.json");
   const insiders = {};
 
   transactions.forEach(transaction => {
@@ -385,10 +386,10 @@ async function initialize(){
   const pdfs_scraped = fs.readdirSync("data/house_pdfs").length;
   let downloadAll = true;
   if(pdfs_scraped != 0) downloadAll = false;
-  await scrapePDFs(downloadAll);
+  const transactions = await scrapePDFs(downloadAll);
   
-  organizeTransactionsBySymbol();
-  organizeTransactionsByPolitician();
+  organizeTransactionsBySymbol(transactions);
+  organizeTransactionsByPolitician(transactions);
   await scrapeSymbols();
 }
 
