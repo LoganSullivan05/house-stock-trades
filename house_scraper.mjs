@@ -39,10 +39,9 @@ function cleanInsiderName(insider){
     .trim();
   //! failure case: "Hon. Eleanor Holmes Norto n " returns "Eleanor Norto"; missing "n"
 
-  if(!clean || clean == "") console.log(insider);
+  if(!clean || clean == "") console.log("Name clean error: "+insider);
   let parts = clean.split(" ").filter(part => part.length > 1);
   const capitalized = capitalizeWord(parts[0]) + " " + capitalizeWord(parts[parts.length - 1]);
-  if(capitalized == "Trott Trott") console.log("trott: "+insider);
   
   return capitalized;
 }
@@ -287,6 +286,8 @@ async function scrapePDFs(downloadAll){
   ensureDirExistsSync("data/house_pdfs");
   ensureDirExistsSync("data/house_txts");
 
+  if(downloadAll) console.log("Downloading all available PTR links");
+
   await downloadPTR(downloadAll);
 
   const dir = fs.readdirSync("data/house_pdfs");
@@ -376,19 +377,26 @@ function organizeTransactionsByPolitician(){
 }
 
 async function initialize(){
-  await scrapePDFs(true);
-  await scrapeSymbols();
+  ensureDirExistsSync("data");
+  ensureDirExistsSync("data/house_pdfs");
+
+  const pdfs_scraped = fs.readdirSync("data/house_pdfs").length;
+  let downloadAll = true;
+  if(pdfs_scraped != 0) downloadAll = false;
+  await scrapePDFs(downloadAll);
+
   organizeTransactionsBySymbol();
   organizeTransactionsByPolitician();
+  await scrapeSymbols();
 }
 
 initialize();
 
 // Scrape & parse PDFS
 // await scrapePDFs();
-// await scrapeSymbols();
 // organizeTransactionsBySymbol();
 // organizeTransactionsByPolitician();
+// await scrapeSymbols();
 
 
 // const bad_symbol_map = readJSONSync("data/bad_symbol_map.json");
