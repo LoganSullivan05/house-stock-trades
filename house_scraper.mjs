@@ -342,7 +342,12 @@ function organizeTransactionsBySymbol(transactions){
   transactions.forEach(transaction => {
     let {symbol, trade_date, min_price, insider, buy_or_sell} = transaction;
     if(!symbol) return;
-
+    if(!insider){
+      // Only known instance: 20005968.pdf
+      console.log("Missing Insider:");
+      console.log(transaction);
+      return
+    }
     symbol = symbol.replaceAll(" ", "").toUpperCase();
     if(!symbols[symbol]) symbols[symbol] = [];
     
@@ -367,6 +372,12 @@ function organizeTransactionsByPolitician(transactions){
   transactions.forEach(transaction => {
     let {symbol, trade_date, min_price, insider, buy_or_sell} = transaction;
     if(!symbol) return;
+    if(!insider){
+      // Only known instance: 20005968.pdf
+      console.log("Missing Insider:");
+      console.log(transaction);
+      return
+    }
     
     symbol = symbol.replaceAll(" ", "").toUpperCase();
     insider = cleanInsiderName(insider);
