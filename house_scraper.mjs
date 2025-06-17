@@ -28,7 +28,6 @@ function cleanInsiderName(insider){
   // combine any lowcase sequence with the previous upper case seq.
   let sliced = insider.split(".").slice(1, insider.length);
   if(sliced.length < 1) sliced = [insider];
-  // removd first step: sliced.join(".").trim()
   const clean = insider // seq. needs to be >=2 chars, edge cas e has one
     .replace(/([A-Z][a-z]+)\s+([a-z]{2,})\b/g, (match, a, b) => a + b)
     .toLowerCase()
@@ -38,10 +37,8 @@ function cleanInsiderName(insider){
     .replace(/\b(hon|mr|mrs|ms|dr|md|jr|sr|ii|iii|iv|v)\b/g, "")
     .replace(/\s+/g, " ")
     .trim();
-  //! ERROR CASE: "Hon. Eleanor Holmes Norto n " returns "Eleanor Norto"; missing "n"
-  //! this is the only error found from this regex, other than McN -> Mcn
+  //! failure case: "Hon. Eleanor Holmes Norto n " returns "Eleanor Norto"; missing "n"
 
-  // return clean;
   if(!clean || clean == "") console.log(insider);
   let parts = clean.split(" ").filter(part => part.length > 1);
   const capitalized = capitalizeWord(parts[0]) + " " + capitalizeWord(parts[parts.length - 1]);
@@ -98,7 +95,6 @@ async function fetchAllLinks(){
 async function fetchCurrentLinks(){
 
   const current_year = new Date().getFullYear();
-  // Removing the headers will cause this request to pull all disclosures (2014-present)
   const res = await fetch("https://disclosures-clerk.house.gov/FinancialDisclosure/ViewMemberSearchResult", {
       "headers": {
         "accept": "*/*",
@@ -200,7 +196,6 @@ function textExtractionRaw(text){
     };
 
     const data = {
-      // uncomment "str" to debug parsing
       "str":str || null,
       "symbol":symbol || null,
       "buy_or_sell":buy_or_sell || null,
@@ -386,6 +381,8 @@ async function initialize(){
   organizeTransactionsBySymbol();
   organizeTransactionsByPolitician();
 }
+
+initialize();
 
 // Scrape & parse PDFS
 // await scrapePDFs();

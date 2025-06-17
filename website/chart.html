@@ -1,0 +1,379 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+	<meta charset="UTF-8">
+	<title>House Stock Trades - Chart</title>
+	<script src="https://unpkg.com/lightweight-charts@4.0.1/dist/lightweight-charts.standalone.production.js"></script>
+	<style>
+		* {
+			box-sizing: border-box;
+		}
+		body {
+			margin: 0;
+			background-color: #0e0e10;
+			color: #e0e0e0;
+			font-family: 'Segoe UI', sans-serif;
+            overflow: hidden;
+		}
+		nav {
+			position: sticky;
+			top: 0;
+			background-color: #18181b;
+			display: flex;
+			justify-content: space-between;
+			align-items: center;
+			padding: 12px 24px;
+			box-shadow: 0 2px 5px rgba(0, 0, 0, 0.3);
+			z-index: 10;
+		}
+		nav .logo {
+			font-size: 20px;
+			font-weight: bold;
+			color: #ffffff;
+		}
+		nav a {
+			color: #d4d4d8;
+			text-decoration: none;
+			margin-left: 20px;
+			font-size: 16px;
+			transition: color 0.2s;
+		}
+		nav a:hover {
+			color: #9d96ff;
+		}
+		.main {
+			padding: 30px 40px;
+			max-width: 1000px;
+			margin: 0 auto;
+		}
+		.controls {
+			display: flex;
+			flex-wrap: wrap;
+			align-items: center;
+			gap: 16px;
+			margin-bottom: 20px;
+		}
+		.controls label,
+		.controls select,
+		.controls input,
+		.controls button {
+			font-size: 16px;
+		}
+		.controls input,
+		.controls select,
+		.controls button {
+			padding: 6px 10px;
+			border-radius: 4px;
+			border: none;
+			background: #1b1b1e;
+			color: #e0e0e0;
+		}
+		.controls button {
+			background-color: #64629c;
+			cursor: pointer;
+			transition: background-color 0.2s;
+		}
+		.controls button:hover {
+			background-color: #7a78c4;
+		}
+		#chart {
+			width: 75%;
+			height: 450px;
+		}
+		#tooltip {
+			width: 25%;
+			padding: 10px;
+			background: #1e1e20;
+			color: #ccc;
+			border-radius: 5px;
+			font-size: 14px;
+		}
+		#aboutPage {
+			line-height: 1.6;
+			font-size: 16px;
+		}
+		#tooltipContent {
+			height: 420px;
+			overflow-y: auto;
+			margin-top: 6px;
+			border: 1px solid #333;
+			border-radius: 4px;
+		}
+
+		#tooltipContent > table {
+			width: 100%;
+			border-collapse: collapse;
+			font-size: 12px;
+		}
+	</style>
+</head>
+<body>
+	<nav>
+		<div class="logo">House Stock Trades</div>
+		<div>
+			<a target="_blank" href="/index.html">Home</a>
+			<a target="_blank" href="/about.html">About</a>
+			<a target="_blank" href="/chart.html">Charts</a>
+		</div>
+	</nav>
+
+	<div class="main">
+        <div class="controls">
+            <label>Stock Symbol: <input id="symbolInput" placeholder="Enter ticker" value="AAPL" /></label>
+            <button onclick="loadChart()">Load Chart</button>
+        </div>
+		<div id="companyName" style="text-align: center; font-size: 1.5em; font-weight: bold; margin-bottom: 10px;"></div>
+		<div style="display: flex; bottom: 5%;">
+			<div id="chart"></div>
+			<div id="tooltip">
+				<div style="margin-bottom: 6px;">
+					<p id="timeRange" style="font-size: 12px;"></p>
+					<label style="font-size: 12px;">
+						View: 
+						<select id="tooltipViewMode" style="background:#1b1b1e; color:#e0e0e0; border:none; padding:2px 6px; font-size:12px;">
+							<option value="trades">Trade Volume</option>
+							<option value="dollars">Dollar Amount</option>
+						</select>
+					</label>
+				</div>
+				<div id="tooltipContent">
+					<table>
+						<thead>
+							<tr>
+								<th>Name</th>
+								<th id="tableLabel">Dollar Amount</th>
+							</tr>
+						</thead>
+						<tbody id="tooltipBody"></tbody>
+					</table>
+				</div>
+			</div>
+		</div>
+	</div>
+
+	<script>
+
+		function createElement(element_type, parent){
+			const el = document.createElement(element_type);
+			if(parent) parent.appendChild(el);
+			return el;
+		}
+
+		function parseDate(dateStr) {			
+			const [month, day, year] = dateStr.split('/');
+			return {
+				month:parseInt(month),
+				day:parseInt(day),
+				year:parseInt(year)
+			};
+			// return `${year}-${month.padStart(2, '0')}-${day.padStart(2, '0')}`;
+		}
+
+		function formatDate(date) {
+			const mm = String(date.getMonth() + 1).padStart(2, '0');
+			const dd = String(date.getDate()).padStart(2, '0');
+			const yyyy = date.getFullYear();
+			return `${mm}/${dd}/${yyyy}`;
+		}
+
+		function abbreviateName(name){
+			return name.split(" ").map(s => s[0]).join(". ") + ".";
+		}
+
+		function dollarsToIndicator(dollars){
+			const amounts = [1001, 15001, 50001, 100001, 250001, 500001, 1000001, 5000001, 25000001, 50000001];
+			let index = amounts.indexOf(dollars);
+			let str = "$";
+			while(index-- > 0) str+="$";
+			return str;
+		}
+
+		async function getStockData(symbol) {
+			const res = await fetch(`/api/stocks/${symbol}`);
+			if (!res.ok) throw new Error('Stock fetch failed');
+			const data = await res.json();
+			return data.map(p => ({
+				time: p.date.substring(0, 10),
+				open: p.open,
+				high: p.high,
+				low: p.low,
+				close: p.close
+			}));
+		}
+		
+		async function getTrades(symbol) {
+			const res = await fetch(`/api/trades/${symbol}`);
+			if (!res.ok) return [];
+			return await res.json();
+		}
+
+		async function loadChart() {
+			const symbol = document.getElementById('symbolInput').value.toUpperCase();
+			const company_res = await fetch("/api/companies/" + symbol);
+			const company_name = await company_res.text();
+
+			document.getElementById("companyName").textContent = company_name;
+
+			const [stockData, trades] = await Promise.all([
+				getStockData(symbol),
+				getTrades(symbol)
+			]);
+
+			const container = document.getElementById('chart');
+			container.innerHTML = '';
+			
+			const chart = LightweightCharts.createChart(container, {
+				layout: {
+					background: { color: '#0e0e10' },
+					textColor: '#e0e0e0'
+				},
+				grid: {
+					vertLines: { color: '#2a2a2f' },
+					horzLines: { color: '#2a2a2f' }
+				},
+				timeScale: { timeVisible: true },
+				width: container.clientWidth,
+				height: 500
+			});
+
+			console.log(chart);
+
+			function getCurrentChartRange() {
+				const timeScale = chart.timeScale();
+				const visibleRange = timeScale.getVisibleRange();
+	
+				if (!visibleRange) return null;
+				
+				function timeToDate(time){
+					const {day, month, year} = time;
+					return new Date(month+"/"+day+"/"+year);
+				}
+	
+				const from = timeScale.coordinateToTime(timeScale.timeToCoordinate(visibleRange.from));
+				const to = timeScale.coordinateToTime(timeScale.timeToCoordinate(visibleRange.to));
+
+				return { from:timeToDate(from), to:timeToDate(to) };
+			}
+
+			function getTradesInRange(mode){
+
+				const range = getCurrentChartRange();
+				let trade_frequencies = {};
+				let dollar_frequencies = {};
+
+				trades.forEach(trade => {
+					const date = new Date(trade.trade_date);
+
+					if(range.from > date || range.to < date) return;
+					trade_frequencies[trade.insider] = 1 + (trade_frequencies[trade.insider] || 0);
+					dollar_frequencies[trade.insider] = (trade.buy_amount-1) + (dollar_frequencies[trade.insider] || 0);
+				});
+
+				let rows = [];
+				
+				const keys = Object.keys(trade_frequencies).sort((a,b)=>{
+					if(mode === "trades") return trade_frequencies[b] - trade_frequencies[a];
+					return dollar_frequencies[b] - dollar_frequencies[a];
+				});
+				
+				keys.forEach(key => {
+					if(mode === "trades") rows.push({insider:key, frequency:trade_frequencies[key]});
+					else rows.push({insider:key, frequency:dollar_frequencies[key]});
+				});
+
+				return rows;
+			}
+			
+			function highlightInsider(insider){
+				prev_markers.forEach((marker, i) => marker.color = prev_colors[i]);
+
+				const relavent_markers = markers.filter(m => m.insider === insider);
+				prev_markers = relavent_markers;
+				prev_colors = relavent_markers.map(marker => marker.color);
+				relavent_markers.forEach(marker => marker.color = "blue");
+
+				candleSeries.setMarkers(markers);
+			}
+			
+			const candleSeries = chart.addCandlestickSeries();
+			// const candleSeries = chart.addLineSeries();
+			candleSeries.setData(stockData);
+
+			// library has issues with large marker quantity / duplicate dates
+			let markers = trades.map(trade => ({
+				time: trade.trade_date,
+				position: 'aboveBar',
+				color: trade.buy_or_sell === 'P' ? 'green' : 'red',
+				shape: trade.buy_or_sell === 'P' ? 'arrowUp' : 'arrowDown',
+				text: abbreviateName(trade.insider) + ` (${dollarsToIndicator(trade.buy_amount)})`,
+				insider: trade.insider,
+				order_type: trade.buy_or_sell,
+				buy_amount: trade.buy_amount
+			}));
+
+			markers = markers.filter(marker => marker.time != null);
+
+			candleSeries.setMarkers(markers);
+						
+			let prev_from = getCurrentChartRange().from;
+			let prev_to = getCurrentChartRange().to;
+			let prev_markers = [];
+			let prev_colors = [];
+
+			function updateTradeRange(mode_change){
+				const {from, to} = getCurrentChartRange();
+				
+				if(!mode_change
+				&& prev_from.getTime() == from.getTime() 
+				&& prev_to.getTime() == to.getTime()){
+					return;
+				}
+				
+				prev_from = from;
+				prev_to = to;
+
+				const time_range_str = formatDate(from) + " - " + formatDate(to);
+				document.getElementById("timeRange").textContent = "Range: " + time_range_str;
+
+				const tooltip_mode_el = document.getElementById('tooltipViewMode');
+				const mode = tooltip_mode_el.value || 'trades';
+				
+				const mode_text = mode === 'trades' ? 'Trades' : 'Dollar Amount';
+
+				const tbody = document.getElementById("tooltipBody");
+				tbody.innerHTML = "";
+
+				getTradesInRange(mode).forEach(row => {
+					const tr = createElement("tr", tbody);
+					const insider_td = createElement("td", tr);
+					const insider_a = createElement("a", insider_td);
+					insider_a.textContent = row.insider;
+					insider_a.href = "table.html?insider="+row.insider;
+					insider_a.target = "_blank";
+					insider_a.onmouseover = () => highlightInsider(insider_a.textContent);
+
+					const frequency_td = createElement("td", tr);
+					frequency_td.style.textAlign = "right";
+					frequency_td.textContent = row.frequency;
+				});
+
+				document.getElementById("tableLabel").textContent = mode_text;
+			}
+
+			setInterval(updateTradeRange, 200);
+			document.getElementById('tooltipViewMode').addEventListener('change', () => {
+				updateTradeRange(true);
+			});
+			
+
+		}
+
+		const params = new URLSearchParams(window.location.search);
+		const symbol = params.get('symbol');
+		if(symbol) document.getElementById('symbolInput').value = symbol;
+		
+		loadChart();
+
+	</script>
+</body>
+</html>

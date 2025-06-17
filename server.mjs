@@ -176,7 +176,6 @@ app.get('/api/companies/:symbol', (req, res) => {
 	res.send(getCompanyName(symbol));
 });
 
-// for index.html cards
 app.get('/api/list/stocks/:time_range', (req, res) => {
 	const time_range = req.params.time_range;
 	if (!symbol_frequency_times[time_range]) {

@@ -1,0 +1,210 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+	<meta charset="UTF-8">
+	<title>House Stock Tracker</title>
+	<style>
+		body {
+			margin: 0;
+			font-family: sans-serif;
+			display: flex;
+			background-color: #0e0e10;
+			color: #e0e0e0;
+		}
+		nav {
+			background-color: #18181b;
+			padding: 12px 24px;
+			display: flex;
+			justify-content: space-between;
+			align-items: center;
+			box-shadow: 0 2px 5px rgba(0, 0, 0, 0.3);
+			position: sticky;
+			top: 0;
+			z-index: 10;
+		}
+
+		nav .logo {
+			font-size: 20px;
+			font-weight: bold;
+		}
+
+		nav a {
+			color: #d4d4d8;
+			text-decoration: none;
+			margin-left: 20px;
+			transition: color 0.2s;
+		}
+
+		nav a:hover {
+			color: #9d96ff;
+		}
+		.sidebar {
+			width: 15%;
+			min-width: 100px;
+			background-color: #111;
+			padding: 1em;
+			box-sizing: border-box;
+			color: #aaa;
+		}
+		.main {
+			flex-grow: 1;
+			padding: 2em;
+			max-width: 70%;
+			margin: 0 auto;
+			box-sizing: border-box;
+		}
+		table {
+			width: 100%;
+			border-collapse: collapse;
+			margin-top: 1em;
+		}
+		thead {
+			background-color: #18181b;
+		}
+		thead th, tbody td {
+			padding: 0.75em;
+			text-align: left;
+			border-bottom: 1px solid #2a2a2f;
+		}
+		tr:hover {
+			background-color: #1b1b1e;
+		}
+		
+		/* td > a {
+			color: white;
+		}
+		td > a:visited {
+			color: #aaa;
+		} */
+
+		select, button {
+			margin: 0.5em 0.5em 0.5em 0;
+			padding: 0.5em;
+			background-color: #1b1b1e;
+			color: #e0e0e0;
+			border: none;
+			border-radius: 4px;
+			cursor: pointer;
+		}
+		#pageIndicator {
+			margin: 0.5em 0;
+			font-weight: bold;
+		}
+	</style>
+</head>
+<body>
+	<nav>
+		<div class="logo">House Stock Trades</div>
+		<div>
+			<a target="_blank" href="/index.html">Home</a>
+			<a target="_blank" href="/about.html">About</a>
+			<a target="_blank" href="/chart.html">Charts</a>
+		</div>
+	</nav>
+
+	<div class="sidebar">Ad Space</div>
+	<div class="main">
+		<h1>Trades for <span id="politicianName">[Loading]</span></h1>
+		<select id="politicianSelect"></select>
+		<div>
+			<button onclick="changePage(-1)">Previous</button>
+			<button onclick="changePage(1)">Next</button>
+		</div>
+		<div id="pageIndicator"></div>
+		<table>
+			<thead>
+				<tr>
+					<th>Date</th>
+					<th>Type</th>
+					<th>Symbol</th>
+					<th>Amount (min)</th>
+				</tr>
+			</thead>
+			<tbody id="tradeTableBody"></tbody>
+		</table>
+	</div>
+	<div class="sidebar">Ad Space</div>
+
+	<script>
+		let currentPage = 0;
+		const pageSize = 10;
+		let allTrades = [];
+
+		function renderTable(trades) {
+			const tbody = document.getElementById("tradeTableBody");
+			tbody.innerHTML = "";
+			const start = currentPage * pageSize;
+			const end = Math.min(start + pageSize, trades.length);
+			const visibleTrades = trades.slice(start, end);
+			for (const trade of visibleTrades) {
+				const tr = document.createElement("tr");
+				tr.innerHTML = `
+					<td>${trade.trade_date}</td>
+					<td>${trade.buy_or_sell}</td>
+					<td><a target="_blank" href=/chart.html?symbol=${trade.symbol}>${trade.symbol}</a></td>
+					<td>$${trade.buy_amount.toLocaleString()}</td>
+				`;
+				tbody.appendChild(tr);
+			}
+			document.getElementById("pageIndicator").textContent = `Showing ${start + 1} - ${end} of ${trades.length}`;
+		}
+
+		function changePage(offset) {
+			const maxPage = Math.floor(allTrades.length / pageSize);
+			const newPage = currentPage + offset;
+			if (newPage >= 0 && newPage <= maxPage) {
+				currentPage = newPage;
+				renderTable(allTrades);
+			}
+		}
+
+		async function loadPoliticians() {
+			const res = await fetch('/api/list/politicians/1Y');
+			const data = await res.json();
+			const select = document.getElementById('politicianSelect');
+            select.onchange = () => loadTrades(select.value);
+
+			data.sort((pair1, pair2) => {
+				if(pair1.insider > pair2.insider) return 1;
+				return -1;
+			});
+
+			data.forEach(pair => {
+				const { insider } = pair;
+				const opt = document.createElement('option');
+				opt.value = insider;
+				opt.textContent = insider;
+
+				select.appendChild(opt);
+			});
+		}
+
+		async function loadTrades(name) {            
+			document.getElementById('politicianName').textContent = name;
+			const res = await fetch(`/api/politician/${encodeURIComponent(name)}`);
+			allTrades = await res.json();
+
+            allTrades.sort((trade1, trade2) => {
+				return new Date(trade2.trade_date) - new Date(trade1.trade_date);
+			});
+			currentPage = 0;
+			renderTable(allTrades);
+		}
+
+		window.addEventListener('DOMContentLoaded', async () => {
+			const params = new URLSearchParams(window.location.search);
+			const insider = params.get('insider');
+			await loadPoliticians();
+			if (insider) {
+				document.getElementById('politicianName').textContent = insider;
+				const select = document.getElementById('politicianSelect');
+				select.value = insider;
+				await loadTrades(insider);
+			} else {
+                const select = document.getElementById('politicianSelect');
+                loadTrades(select.options[0].value);
+            }
+		});
+	</script>
+</body>
+</html>

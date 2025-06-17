@@ -1,0 +1,106 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+	<meta charset="UTF-8" />
+	<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+	<title>House Stock Trades - About</title>
+	<style>
+		body {
+			margin: 0;
+			font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+			background-color: #0e0e10;
+			color: #e0e0e0;
+			line-height: 1.6;
+		}
+		nav {
+			background-color: #18181b;
+			padding: 1em 2em;
+			display: flex;
+			justify-content: space-between;
+			align-items: center;
+			border-bottom: 1px solid #2a2a2f;
+			box-shadow: 0 2px 4px rgba(0,0,0,0.5);
+		}
+		nav a {
+			color: #d4d4d8;
+			text-decoration: none;
+			margin: 0 1em;
+			font-weight: bold;
+			transition: color 0.3s;
+		}
+		nav a:hover {
+			color: #9d96ff;
+		}
+		main {
+			max-width: 900px;
+			margin: 3em auto;
+			padding: 2em;
+			background-color: #1b1b1e;
+			border-radius: 12px;
+			box-shadow: 0 0 10px rgba(0,0,0,0.3);
+		}
+		h1 {
+			color: #9d96ff;
+			margin-top: 0;
+		}
+		section {
+			margin-bottom: 2em;
+		}
+		p {
+			margin-bottom: 1em;
+		}
+		a {
+			color: #9d96ff;
+			text-decoration: underline;
+		}
+		a:hover {
+			color: #c4c0ff;
+		}
+		footer {
+			text-align: center;
+			padding: 2em;
+			font-size: 0.9em;
+			color: #888;
+		}
+	</style>
+</head>
+<body>
+	<nav>
+		<div><strong>House Stock Trades</strong></div>
+		<div>
+			<a target="_blank" href="/index.html">Home</a>
+			<a target="_blank" href="/about.html">About</a>
+			<a target="_blank" href="/chart.html">Charts</a>
+		</div>
+	</nav>
+
+	<main>
+		<h1>About This Project</h1>
+
+		<section>
+			<p><strong>House Stock Trades</strong> is a transparency-focused project that tracks and visualizes U.S. House Representatives' stock trades.</p>
+			<p>The site aggregates publicly available financial disclosure data from members of Congress and overlays that with historical stock prices to allow better insight into how trades align with political activity.</p>
+		</section>
+
+		<section>
+			<h2>Purpose</h2>
+			<p>This project aims to highlight potential conflicts of interest and market timing by elected officials. By bringing visibility to this data, users can better analyze patterns, volume, and timing of political trades.</p>
+			<p>Only public stock trades are included—assets like real estate and bonds are excluded to keep the focus sharp and relevant.</p>
+		</section>
+
+		<section>
+			<h2>Data Sources</h2>
+			<p>All financial data is scraped or processed from official filings found on the <a target="_blank" href="https://disclosures-clerk.house.gov/FinancialDisclosure#Search">House Financial Disclosure portal</a>.</p>
+			<p>Stock prices are matched using archived market data for accuracy and aligned by date to track legislative influence.</p>
+		</section>
+
+		<section>
+			<h2>About the Developer</h2>
+			<p>This site was built as a personal side project to blend civic interest with web development. All source code for this project is available on my <a target="_blank" href="https://github.com/LoganSullivan05/house-stock-trades">GitHub repository</a>.</p>
+		</section>
+	</main>
+    <footer>
+	    Data is for informational purposes only. This site does not provide investment advice, recommendations, or endorsements of any kind.
+    </footer>
+</body>
+</html>
