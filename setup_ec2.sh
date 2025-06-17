@@ -2,7 +2,6 @@
 
 DOMAIN_NAME=housestocktrades.com
 APP_PORT=3000
-REPO_URL=https://github.com/LoganSullivan05/house-stock-trades.git
 
 sudo apt update && sudo apt upgrade -y
 
@@ -10,9 +9,6 @@ echo "Installing Node.js, git, and Nginx..."
 curl -fsSL https://deb.nodesource.com/setup_18.x | sudo -E bash -
 sudo apt install -y nodejs git nginx ufw python3-certbot-nginx
 
-echo "Cloning project..."
-git clone $REPO_URL app
-cd app
 npm install
 
 # Persistance with pm2
