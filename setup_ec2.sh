@@ -25,6 +25,8 @@ nvm alias default 18
 npm install
 
 sudo yum install -y nginx firewalld git python3-certbot-nginx
+sudo yum install -y python-pip
+pip install PyPDF2
 
 echo "Configuring firewall..."
 sudo systemctl enable firewalld --now
