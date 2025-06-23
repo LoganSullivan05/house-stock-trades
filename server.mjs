@@ -151,6 +151,11 @@ insider_frequency_times["ALL"] = getInsiderTradesByFrequency(100000);
 
 app.use(express.static('website'));
 
+app.get('/robots.txt', (req, res) => {
+	res.end(`User-agent: *
+Disallow:`);
+});
+
 app.get('/api/stocks/:symbol', async (req, res) => {
 	const symbol = req.params.symbol.toUpperCase();
 	const file_path = `data/stock_data/${symbol}.json`;
