@@ -20,6 +20,8 @@ async function updateSymbol(symbol){
 	try{
 		const todays_date = new Date().toDateString();
 		if(symbol_updates[symbol] == todays_date) return;
+		if(symbol_updates[symbol] > todays_date) return;
+		symbol_updates[symbol] = todays_date;
 
 		const file_path = `data/stock_data/${symbol}.json`;
 		const trades = readJSONSync(file_path);
@@ -32,7 +34,6 @@ async function updateSymbol(symbol){
 		const symbol_combined_data = [...trades, ...symbol_historical_data];
 		fs.writeFileSync(file_path, JSON.stringify(symbol_combined_data));
 
-		symbol_updates[symbol] = todays_date;
 	}
 	catch(e){
 		console.log("Error fetching symbol: " + symbol);
