@@ -41,10 +41,17 @@
 		nav a:hover {
 			color: #9d96ff;
 		}
-		.main {
+		/* .main {
 			padding: 30px 40px;
 			max-width: 1000px;
 			margin: 0 auto;
+		} */
+		 .main {
+			padding: 1em;
+			margin: 0 auto;
+			width: 100%;
+			max-width: 1400px;
+			box-sizing: border-box;
 		}
 		.controls {
 			display: flex;
@@ -76,24 +83,22 @@
 		.controls button:hover {
 			background-color: #7a78c4;
 		}
-		#chart {
-			width: 75%;
-			height: 450px;
+
+		 #chart {
+			flex: 4 1 0%;
+			height: 100%;
+			min-width: 0;
 		}
+
 		#tooltip {
-			width: 25%;
-			padding: 10px;
+			flex: 1 1 0%;
+			height: 100%;
 			background: #1e1e20;
-			color: #ccc;
 			border-radius: 5px;
-			font-size: 14px;
 		}
-		#aboutPage {
-			line-height: 1.6;
-			font-size: 16px;
-		}
+
 		#tooltipContent {
-			height: 420px;
+			height: 80%;
 			overflow-y: auto;
 			margin-top: 6px;
 			border: 1px solid #333;
@@ -102,8 +107,22 @@
 
 		#tooltipContent > table {
 			width: 100%;
-			border-collapse: collapse;
+			/* border-collapse: collapse; */
+			border: none;
 			font-size: 12px;
+		}
+		#chartContainer {
+			display: flex;
+			flex-direction: row;
+			width: 80%;
+			height: 70vh;
+			max-height: 800px;
+			min-height: 300px;
+			gap: 1rem;
+			margin-left: 10%;
+		}
+		#timeRange{
+			font-size: clamp(9px, 1vw, 12px);
 		}
 	</style>
 </head>
@@ -123,11 +142,11 @@
             <button onclick="loadChart()">Load Chart</button>
         </div>
 		<div id="companyName" style="text-align: center; font-size: 1.5em; font-weight: bold; margin-bottom: 10px;"></div>
-		<div style="display: flex; bottom: 5%;">
+		<div id="chartContainer">
 			<div id="chart"></div>
 			<div id="tooltip">
 				<div style="margin-bottom: 6px;">
-					<p id="timeRange" style="font-size: 12px;"></p>
+					<p id="timeRange"></p>
 					<label style="font-size: 12px;">
 						View: 
 						<select id="tooltipViewMode" style="background:#1b1b1e; color:#e0e0e0; border:none; padding:2px 6px; font-size:12px;">
@@ -235,6 +254,13 @@
 				width: container.clientWidth,
 				height: 500
 			});
+
+			function resizeChart(){
+				const container = document.getElementById('chart');
+				chart.resize(container.clientWidth, container.clientHeight);				
+			}
+
+			window.addEventListener('resize', resizeChart);
 
 			console.log(chart);
 
@@ -358,6 +384,7 @@
 				});
 
 				document.getElementById("tableLabel").textContent = mode_text;
+				resizeChart();
 			}
 
 			setInterval(updateTradeRange, 200);
