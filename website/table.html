@@ -7,7 +7,7 @@
 		body {
 			margin: 0;
 			font-family: sans-serif;
-			display: flex;
+			/* display: flex; */
 			background-color: #0e0e10;
 			color: #e0e0e0;
 		}
@@ -53,6 +53,9 @@
 			margin: 0 auto;
 			box-sizing: border-box;
 		}
+		.flexContainer{
+			display: flex;
+		}
 		table {
 			width: 100%;
 			border-collapse: collapse;
@@ -90,6 +93,7 @@
 			margin: 0.5em 0;
 			font-weight: bold;
 		}
+		
 	</style>
 </head>
 <body>
@@ -101,29 +105,31 @@
 			<a target="_blank" href="/chart.html">Charts</a>
 		</div>
 	</nav>
-
-	<div class="sidebar">Ad Space</div>
-	<div class="main">
-		<h1>Trades for <span id="politicianName">[Loading]</span></h1>
-		<select id="politicianSelect"></select>
-		<div>
-			<button onclick="changePage(-1)">Previous</button>
-			<button onclick="changePage(1)">Next</button>
+	<div class="flexContainer">
+		<div class="sidebar">Ad Space</div>
+		<div class="main">
+			<h1>Trades for <span id="politicianName">[Loading]</span></h1>
+			<select id="politicianSelect"></select>
+			<div>
+				<button onclick="changePage(-1)">Previous</button>
+				<button onclick="changePage(1)">Next</button>
+			</div>
+			<div id="pageIndicator"></div>
+			<table>
+				<thead>
+					<tr>
+						<th>Date</th>
+						<th>Type</th>
+						<th>Symbol</th>
+						<th>Amount (min)</th>
+					</tr>
+				</thead>
+				<tbody id="tradeTableBody"></tbody>
+			</table>
 		</div>
-		<div id="pageIndicator"></div>
-		<table>
-			<thead>
-				<tr>
-					<th>Date</th>
-					<th>Type</th>
-					<th>Symbol</th>
-					<th>Amount (min)</th>
-				</tr>
-			</thead>
-			<tbody id="tradeTableBody"></tbody>
-		</table>
+		<div class="sidebar">Ad Space</div>
 	</div>
-	<div class="sidebar">Ad Space</div>
+
 
 	<script>
 		let currentPage = 0;
