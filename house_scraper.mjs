@@ -390,7 +390,7 @@ function organizeTransactionsByPolitician(transactions){
   fs.writeFileSync("data/insider_data.json", JSON.stringify(insiders));
 }
 
-async function initialize(){
+async function updateData(){
   ensureDirExistsSync("data");
   ensureDirExistsSync("data/house_pdfs");
 
@@ -404,7 +404,7 @@ async function initialize(){
   await scrapeSymbols();
 }
 
-initialize();
+setInterval(updateData, 24 * 60 * 60 * 1000);
 
 // Scrape & parse PDFS
 // await scrapePDFs();
