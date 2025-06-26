@@ -1,0 +1,91 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+	<meta charset="UTF-8">
+	<meta name="viewport" content="width=device-width, initial-scale=1.0">
+	<title>Tools and Datasets for Monitoring Congressional Trades</title>
+	<link rel="stylesheet" href="/styles.css">
+</head>
+<body>
+	<header>
+		<h1>Tools and Datasets for Monitoring Congressional Trades</h1>
+		<nav>
+			<a href="/index.html">Home</a>
+			<a href="/about.html">About</a>
+			<a href="/chart.html">Charts</a>
+			<a href="/table.html">Table</a>
+			<a href="/articles.html">Articles</a>
+		</nav>
+	</header>
+	<main>
+		<article>
+			<section>
+				<h2>Introduction</h2>
+				<p>
+					Tracking congressional stock trades has become increasingly important for transparency, journalism, and civic accountability. Thanks to public disclosure laws, there are now a variety of tools and datasets available to monitor and analyze this activity. In this article, we highlight the most valuable platforms, APIs, and data sources for anyone looking to study or track financial activity by U.S. lawmakers.
+				</p>
+
+				<h2>Official Disclosure Portals</h2>
+				<p>
+					The U.S. House and Senate maintain official financial disclosure portals where Periodic Transaction Reports (PTRs) are uploaded. These are:
+					<ul>
+						<li><strong>House Office of the Clerk:</strong> Offers a searchable database of filings</li>
+						<li><strong>Senate Public Financial Disclosures:</strong> Provides downloadable forms by name and year</li>
+					</ul>
+					These resources are comprehensive but often clunky and not designed for large-scale analysis. Data is frequently in PDF format, requiring conversion.
+				</p>
+
+				<h2>Third-Party Aggregators</h2>
+				<p>
+					Several nonprofit and media organizations have stepped in to make this data more accessible:
+					<ul>
+						<li><strong>Quiver Quantitative:</strong> Offers scraped and cleaned congressional trading data via dashboards and APIs</li>
+						<li><strong>Senate Stock Watcher / House Stock Watcher:</strong> Community-run tools for browsing trades</li>
+						<li><strong>OpenSecrets:</strong> Compiles financial disclosure summaries including assets and liabilities</li>
+					</ul>
+					These sources provide processed data that’s easier to analyze but may lag behind official releases.
+				</p>
+
+				<h2>APIs and Programmatic Access</h2>
+				<p>
+					For developers and data scientists, APIs offer a convenient way to automate data retrieval. Notable options include:
+					<ul>
+						<li><strong>Quiver Quant API:</strong> Accesses congressional trades and news mentions</li>
+						<li><strong>Yahoo Finance API (unofficial):</strong> Useful for pulling historical stock prices</li>
+						<li><strong>ProPublica Congress API:</strong> Focuses on bill tracking but useful for contextual alignment</li>
+					</ul>
+					Combining trade data with market performance and legislation timelines can provide deeper insight.
+				</p>
+
+				<h2>Data Processing Libraries</h2>
+				<p>
+					To work with disclosure data effectively, processing tools are key. Libraries such as <code>pdfplumber</code> and <code>PyMuPDF</code> help extract text from PDFs. For analysis and visualization, <code>pandas</code>, <code>D3.js</code>, and <code>Plotly</code> are popular.
+				</p>
+				<p>
+					Scripts can be built to identify duplicate filings, late disclosures, or anomalous trades based on timing or sector clustering.
+				</p>
+
+				<h2>Best Practices for Analysis</h2>
+				<p>
+					When analyzing congressional trading data:
+					<ul>
+						<li>Cross-reference trades with committee assignments</li>
+						<li>Monitor timing around major policy events</li>
+						<li>Compare trades to market benchmarks</li>
+						<li>Look for cluster activity among multiple lawmakers</li>
+					</ul>
+					A rigorous, transparent methodology enhances credibility and reveals more actionable insights.
+				</p>
+
+				<h2>Conclusion</h2>
+				<p>
+					Monitoring congressional stock trades is a vital component of modern accountability. With the right tools and datasets, citizens and analysts can shine a light on patterns that deserve public attention. As technology improves and disclosures become more accessible, the capacity for informed oversight will continue to grow.
+				</p>
+			</section>
+		</article>
+	</main>
+	<footer>
+		<p>Not financial advice. This website is for informational purposes only. Always consult a qualified professional before making investment decisions.</p>
+	</footer>
+</body>
+</html>

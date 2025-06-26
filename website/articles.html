@@ -1,0 +1,119 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+	<meta charset="UTF-8" />
+	<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+	<title>House Stock Trades - Articles</title>
+	<link rel="stylesheet" href="/styles.css" />
+	<style>
+		#article-list {
+			list-style: none;
+			padding: 0;
+			display: grid;
+			gap: 1em;
+		}
+
+		#article-list li {
+			background-color: var(--box-bg);
+			border: 1px solid var(--border-color);
+			border-radius: 8px;
+			padding: 1em 1.5em;
+			transition: transform 0.2s ease, box-shadow 0.2s ease;
+		}
+
+		#article-list li:hover {
+			transform: scale(1.02);
+			box-shadow: 0 4px 12px rgba(0, 0, 0, 0.3);
+		}
+
+		#article-list a {
+			text-decoration: none;
+			color: var(--link-hover);
+			font-size: 0.95em;
+			font-weight: 600;
+			display: block;
+		}
+
+		h2 {
+			color: var(--text-color);
+		}
+
+		header {
+		background-color: var(--nav-bg);
+		padding: 1em 2em;
+		border-bottom: 1px solid var(--border-color);
+		display: flex;
+		justify-content: space-between;
+		align-items: center;
+	}
+
+		header h1 {
+		margin: 0;
+		font-size: 1.5em;
+		color: var(--primary-accent);
+	}
+
+		nav {
+		display: flex;
+		gap: 1em;
+	}
+
+		nav a {
+		color: var(--text-color);
+		text-decoration: none;
+		font-weight: bold;
+		transition: color 0.2s ease;
+	}
+
+		nav a:hover {
+		color: var(--link-hover);
+	}
+	</style>
+</head>
+<body>
+	<header>
+		<h1>All Articles</h1>
+		<nav>
+			<a target="_blank" href="/index.html">Home</a>
+			<a target="_blank" href="/about.html">About</a>
+			<a target="_blank" href="/chart.html">Charts</a>
+			<a target="_blank" href="/articles.html">Articles</a>
+		</nav>
+	</header>
+
+	<main>
+		<article>
+			<section>
+				<h2>Browse Topics</h2>
+				<ul id="article-list"></ul>
+			</section>
+		</article>
+	</main>
+
+	<footer>
+		<p>Not financial advice. This website is for informational purposes only. Always consult a qualified professional before making investment decisions.</p>
+	</footer>
+
+	<script>
+    async function loadArticles(){
+
+        const articles = await (await fetch("/api/articles")).json();
+
+        const ul = document.getElementById("article-list");
+        articles.forEach(slug => {
+            console.log(slug);
+            
+            const li = document.createElement("li");
+            const a = document.createElement("a");
+            a.href = `/articles/${slug}.html`;
+            a.textContent = slug.replace(/-/g, ' ').replace(/_/g, ' ').replace(/\b\w/g, c => c.toUpperCase());
+            li.appendChild(a);
+            ul.appendChild(li);
+        });
+    }
+
+    loadArticles();
+
+	</script>
+</body>
+</html>

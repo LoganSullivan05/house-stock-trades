@@ -106,6 +106,36 @@ function getCompanyName(symbol){
 	|| "Unknown";
 }
 
+// ---- article slop -------
+let article_slugs = [];
+
+function loadArticleSlugs() {
+	const files = fs.readdirSync("website/articles");
+	article_slugs = files
+		.filter(f => f.endsWith('.html'))
+		.map(f => f.replace('.html', ''));
+}
+loadArticleSlugs();
+
+function getRecommendedArticles(current_slug) {
+	const options = article_slugs.filter(slug => slug !== current_slug);
+	const shuffled = options.sort(() => 0.5 - Math.random());
+	return shuffled.slice(0, 4);
+}
+
+function createRecommendationHTML(slugs) {
+	return `
+<section class="recommended">
+	<h2>Recommended Articles</h2>
+	<ul>
+		${slugs.map(slug => `<li><a href="/articles/${slug}.html">${slug.replace(/-/g, ' ').replace(/_/g, ' ').replace(/\b\w/g, l => l.toUpperCase())}</a></li>`).join('\n')}
+	</ul>
+</section>`;
+}
+
+// ---- article slop -------
+
+
 const app = express();
 const port = 3000;
 
@@ -128,7 +158,6 @@ const symbol_keys = Object.keys(symbols);
 symbol_keys.sort((a, b) => symbols[b].length - symbols[a].length);
 const symbol_frequency_times = {};
 
-
 symbol_frequency_times["1M"] = getStockTradesByFrequency(1);
 symbol_frequency_times["6M"] = getStockTradesByFrequency(6);
 symbol_frequency_times["1Y"] = getStockTradesByFrequency(12);
@@ -148,8 +177,31 @@ insider_frequency_times["10Y"] = getInsiderTradesByFrequency(120);
 insider_frequency_times["ALL"] = getInsiderTradesByFrequency(100000);
 
 
+// article slop: add links for SEO
+app.get('/articles/:slug.html', async (req, res) => {
+	const { slug } = req.params;
+	const filePath = `website/articles/${slug}.html`;
+
+	try {
+		let html = fs.readFileSync(filePath).toString();
+
+		const recommendations = createRecommendationHTML(getRecommendedArticles(slug));
+		html = html.replace('</article>', `${recommendations}</article>`);
+
+		res.send(html);
+	} catch (err) {
+		console.log(err);
+		res.status(404).send('Article not found.');
+	}
+});
+
+app.get("/api/articles", (req, res) => {
+	res.json(article_slugs);
+});
 
 app.use(express.static('website'));
+
+
 
 app.get('/robots.txt', (req, res) => {
 	res.end(`User-agent: *
