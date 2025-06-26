@@ -69,6 +69,7 @@
 		color: var(--link-hover);
 	}
 	</style>
+	<script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-2878584983232027" crossorigin="anonymous"></script>
 </head>
 <body>
 	<header>
@@ -100,9 +101,7 @@
         const articles = await (await fetch("/api/articles")).json();
 
         const ul = document.getElementById("article-list");
-        articles.forEach(slug => {
-            console.log(slug);
-            
+        articles.forEach(slug => {            
             const li = document.createElement("li");
             const a = document.createElement("a");
             a.href = `/articles/${slug}.html`;

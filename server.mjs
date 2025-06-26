@@ -186,7 +186,9 @@ app.get('/articles/:slug.html', async (req, res) => {
 		let html = fs.readFileSync(filePath).toString();
 
 		const recommendations = createRecommendationHTML(getRecommendedArticles(slug));
+		const adsense_str = `<script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-2878584983232027" crossorigin="anonymous"></script>`;
 		html = html.replace('</article>', `${recommendations}</article>`);
+		html = html.replace('</head>', `${adsense_str}</article>`);
 
 		res.send(html);
 	} catch (err) {
