@@ -178,6 +178,46 @@ insider_frequency_times["ALL"] = getInsiderTradesByFrequency(100000);
 
 
 // article slop: add links for SEO
+
+const article_cookie_head = `<script>
+	window.dataLayer = window.dataLayer || [];
+	function gtag(){dataLayer.push(arguments);}
+	gtag('consent', 'default', {
+		'ad_storage': 'denied',
+		'analytics_storage': 'denied'
+	});
+</script>`;
+
+
+const article_cookie_body = `
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/cookieconsent@3/build/cookieconsent.min.css" />
+<script src="https://cdn.jsdelivr.net/npm/cookieconsent@3/build/cookieconsent.min.js"></script>
+<script>
+window.addEventListener("load", function(){
+	window.cookieconsent.initialise({
+			palette: {
+				popup: { background: "#18181b", text: "#d4d4d8" },
+				button: { background: "#6366f1", text: "#ffffff" }
+			},
+			content: {
+			message: "We use cookies for personalized ads and analytics.",
+			dismiss: "Accept",
+			link: "Privacy Policy",
+			href: "/privacy-policy.html"
+		},
+		onInitialise: function (status) {
+			if (status == cookieconsent.status.allow) {
+				gtag('consent', 'update', {
+					'ad_storage': 'granted',
+					'analytics_storage': 'granted'
+				});
+			}
+		}
+	});
+});
+</script>`;
+
+
 app.get('/articles/:slug.html', async (req, res) => {
 	const { slug } = req.params;
 	const filePath = `website/articles/${slug}.html`;
@@ -188,7 +228,8 @@ app.get('/articles/:slug.html', async (req, res) => {
 		const recommendations = createRecommendationHTML(getRecommendedArticles(slug));
 		const adsense_str = `<script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-2878584983232027" crossorigin="anonymous"></script>`;
 		html = html.replace('</article>', `${recommendations}</article>`);
-		html = html.replace('</head>', `${adsense_str}</article>`);
+		html = html.replace('</head>', `${adsense_str}${article_cookie_head}</head>`);
+		html = html.replace('</body>', `${article_cookie_body}</body>`);
 
 		res.send(html);
 	} catch (err) {

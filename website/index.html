@@ -7,6 +7,14 @@
 	<meta name="description" content="Monitor stock trades by U.S. House of Representatives members. View recent disclosures, top-traded stocks, and track financial trends among politicians.">
 	<link rel="icon" href="/favicon.ico" />
 	<script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-2878584983232027" crossorigin="anonymous"></script>
+	<script>
+	window.dataLayer = window.dataLayer || [];
+	function gtag(){dataLayer.push(arguments);}
+	gtag('consent', 'default', {
+		'ad_storage': 'denied',
+		'analytics_storage': 'denied'
+	});
+	</script>
 	<style>
 		* {
 			box-sizing: border-box;
@@ -229,5 +237,31 @@
 		sortPoliticians();
 		
 	</script>
+	<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/cookieconsent@3/build/cookieconsent.min.css" />
+<script src="https://cdn.jsdelivr.net/npm/cookieconsent@3/build/cookieconsent.min.js"></script>
+<script>
+window.addEventListener("load", function(){
+	window.cookieconsent.initialise({
+			palette: {
+				popup: { background: "#18181b", text: "#d4d4d8" },
+				button: { background: "#6366f1", text: "#ffffff" }
+			},
+			content: {
+			message: "We use cookies for personalized ads and analytics.",
+			dismiss: "Accept",
+			link: "Privacy Policy",
+			href: "/privacy-policy.html"
+		},
+		onInitialise: function (status) {
+			if (status == cookieconsent.status.allow) {
+				gtag('consent', 'update', {
+					'ad_storage': 'granted',
+					'analytics_storage': 'granted'
+				});
+			}
+		}
+	});
+});
+</script>
 </body>
 </html>

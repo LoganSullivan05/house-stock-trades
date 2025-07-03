@@ -114,5 +114,31 @@
     loadArticles();
 
 	</script>
+		<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/cookieconsent@3/build/cookieconsent.min.css" />
+<script src="https://cdn.jsdelivr.net/npm/cookieconsent@3/build/cookieconsent.min.js"></script>
+<script>
+window.addEventListener("load", function(){
+	window.cookieconsent.initialise({
+			palette: {
+				popup: { background: "#18181b", text: "#d4d4d8" },
+				button: { background: "#6366f1", text: "#ffffff" }
+			},
+			content: {
+			message: "We use cookies for personalized ads and analytics.",
+			dismiss: "Accept",
+			link: "Privacy Policy",
+			href: "/privacy-policy.html"
+		},
+		onInitialise: function (status) {
+			if (status == cookieconsent.status.allow) {
+				gtag('consent', 'update', {
+					'ad_storage': 'granted',
+					'analytics_storage': 'granted'
+				});
+			}
+		}
+	});
+});
+</script>
 </body>
 </html>
