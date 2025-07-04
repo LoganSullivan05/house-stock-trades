@@ -33,10 +33,16 @@ header {
     height: min(5vh, 50px);
 }
 
+h1 {
+	color: var(--primary-accent);
+	font-size: max(12px, 1.5vw);
+}
+
 nav a {
 	color: var(--text-color);
 	text-decoration: none;
 	margin: 0 1em;
+	font-size: max(8px, 1.2vw);
 	font-weight: bold;
 	transition: color 0.2s ease;
 }
@@ -53,11 +59,6 @@ article {
 	border: 1px solid var(--border-color);
 	border-radius: 8px;
 	box-shadow: 0 0 8px rgba(0, 0, 0, 0.3);
-}
-
-h1 {
-	color: var(--primary-accent);
-	font-size: 1.5em;
 }
 
 h2 {
@@ -108,15 +109,4 @@ footer {
 
 .recommended a:hover {
 	text-decoration: underline;
-}
-
-@media (max-width: 600px) {
-	nav a {
-		display: inline-block;
-		margin: 0.5em 0;
-	}
-	header {
-		flex-direction: column;
-		align-items: flex-start;
-	}
 }
