@@ -379,6 +379,7 @@
 					const insider_a = createElement("a", insider_td);
 					insider_a.textContent = row.insider;
 					insider_a.href = "table.html?insider="+row.insider;
+					insider_a.rel = "canonical"
 					insider_a.target = "_blank";
 					insider_a.onmouseover = () => highlightInsider(insider_a.textContent);
 

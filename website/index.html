@@ -132,6 +132,15 @@
 		</div>
 	</nav>
 	<div class="main">
+		<div class="hero" style="padding: 32px 24px; margin-bottom: 20px; background: #131316; text-align: center; border-bottom: 1px solid #2a2a2f;">
+		<h1 style="font-size: 30px; color: #ffffff; margin-bottom: 12px;">Track Congressional Stock Trades</h1>
+		<h2 style="font-size: 18px; font-weight: normal; color: #d4d4d8; max-width: 720px; margin: 0 auto;">
+		HouseStockTrades.com monitors stock disclosures from U.S. Representatives. Discover which politicians are trading and which stocks they're trading - updated automatically from official filings.
+	</h2>
+	<h2 style="font-size: 18px; font-weight: normal; color: #d4d4d8; max-width: 720px; margin: 10px auto;">
+		This website was designed for accessibility and transparency - all data is freely available without requiring account registration or subscriptions, unlike many other platforms.
+	</h2>
+</div>
 		<div class="tabs">
 			<button id="politicianTabButton" onclick="showTab('politicians')" class="active">Politicians</button>
 			<button id="stockTabButton" onclick="showTab('stocks')">Stocks</button>
@@ -224,6 +233,7 @@
 			else{
 				container.href = "/table.html?insider="+name;
 			}
+			container.rel = "canonical";
 			container.target = "_blank";
 			a.textContent = name;
 			p.textContent = "Trades: " + trades;

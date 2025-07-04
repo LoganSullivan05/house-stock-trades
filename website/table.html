@@ -151,7 +151,7 @@
 				tr.innerHTML = `
 					<td>${trade.trade_date}</td>
 					<td>${trade.buy_or_sell}</td>
-					<td><a target="_blank" href=/chart.html?symbol=${trade.symbol}>${trade.symbol}</a></td>
+					<td><a target="_blank" rel="canonical" href=/chart.html?symbol=${trade.symbol}>${trade.symbol}</a></td>
 					<td>$${trade.buy_amount.toLocaleString()}</td>
 				`;
 				tbody.appendChild(tr);
