@@ -229,7 +229,7 @@ app.get('/articles/:slug.html', async (req, res) => {
 	// backwards compatibility: (underscored URLS were already indexed)
 	if (slug.includes('_')) {
 		const new_slug = slug.replace(/_/g, '-');
-		return res.redirect(301, `/articles/${new_slug}.html`);
+		return res.redirect(301, `https://housestocktrades.com/articles/${new_slug}.html`);
 	}
 
 	const filePath = `website/articles/${slug}.html`;
