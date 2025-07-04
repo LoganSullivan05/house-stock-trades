@@ -217,6 +217,7 @@ window.addEventListener("load", function(){
 });
 </script>`;
 
+app.set('trust proxy', true);
 
 app.get('/articles_short/:slug.html', async (req, res) => {
 	res.status(410).send('Article removed.');
