@@ -218,6 +218,10 @@ window.addEventListener("load", function(){
 </script>`;
 
 
+app.get('/articles_short/:slug.html', async (req, res) => {
+	res.status(410).send('Article removed.');
+});
+
 app.get('/articles/:slug.html', async (req, res) => {
 	const { slug } = req.params;
 	
