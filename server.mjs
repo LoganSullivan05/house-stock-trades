@@ -220,6 +220,13 @@ window.addEventListener("load", function(){
 
 app.get('/articles/:slug.html', async (req, res) => {
 	const { slug } = req.params;
+	
+	// backwards compatibility: (underscored URLS were already indexed)
+	if (slug.includes('_')) {
+		const new_slug = slug.replace(/_/g, '-');
+		return res.redirect(301, `/articles/${new_slug}`);
+	}
+
 	const filePath = `website/articles/${slug}.html`;
 
 	try {
