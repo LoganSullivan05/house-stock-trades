@@ -16,7 +16,7 @@
 			background-color: #0e0e10;
 			color: #e0e0e0;
 			font-family: 'Segoe UI', sans-serif;
-            overflow: hidden;
+            /* overflow: hidden; */
 		}
 		nav {
 			position: sticky;
@@ -89,13 +89,13 @@
 
 		 #chart {
 			flex: 4 1 0%;
-			height: 100%;
+			height: 90%;
 			min-width: 0;
 		}
 
 		#tooltip {
 			flex: 1 1 0%;
-			height: 100%;
+			height: 90%;
 			background: #1e1e20;
 			border-radius: 5px;
 		}
@@ -174,7 +174,70 @@
 		</div>
 	</div>
 
-	<script>
+<section style="max-width: 90%; margin: 40px; padding: 20px; background-color: #1b1b1e; border-radius: 12px; box-shadow: 0 0 8px rgba(0,0,0,0.4); font-size: 16px; color: #d4d4d8;">
+	<h2 style="color: #9d96ff; margin-top: 0;text-align: center;">About This Chart Tool</h2>
+	<p>
+		This interactive chart provides a comprehensive view of how U.S. House Representatives trade individual stocks. By overlaying real stock price data with trade disclosure events, this tool helps the public analyze patterns and timing in congressional financial activity.
+	</p>
+	<p>
+		To use the chart, enter any stock ticker (e.g., <strong>AAPL</strong>) and click “Load Chart.” The system will retrieve both historical market data and congressional trade reports for that ticker. Each trade made by a member of Congress is represented as a marker on the chart; green for a purchase (buy), red for a sale (sell).
+	</p>
+	<p>
+		Each marker includes an abbreviated name of the representative and a symbol indicating the size of the trade. The size is represented using a tiered dollar sign system (e.g., $, $$, $$$, etc.). These are not exact values but ranges based on required federal disclosure brackets.
+	</p>
+	<h3 style="color: #bcbcff;">Trade Amount Legend</h3>
+	<ul style="line-height: 1.8;">
+		<li><strong>$</strong>: $1,001 - $15,000</li>
+		<li><strong>$$</strong>: $15,001 - $50,000</li>
+		<li><strong>$$$</strong>: $50,001 - $100,000</li>
+		<li><strong>$$$$</strong>: $100,001 - $250,000</li>
+		<li><strong>$$$$$</strong>: $250,001 - $500,000</li>
+		<li><strong>$$$$$$</strong>: $500,001 - $1,000,000</li>
+		<li><strong>$$$$$$$</strong>: $1,000,001 - $5,000,000</li>
+		<li><strong>$$$$$$$$</strong>: $5,000,001 - $25,000,000</li>
+		<li><strong>$$$$$$$$$</strong>: $25,000,001 - $50,000,000</li>
+	</ul>
+	<p>
+		These dollar tiers reflect ranges disclosed in official House ethics filings. Because the exact dollar amounts are not required, we use this visual shorthand to indicate relative trade size at a glance.
+	</p>
+	<p>
+		To the right of the chart, you'll find a real-time table showing trade activity for the currently visible date range. This table lists representatives who traded the selected stock and either the number of trades or the total estimated dollar volume, depending on which view is selected via the dropdown. This allows users to explore not only who traded, but how actively and at what scale.
+	</p>
+	<p>
+		Hovering over a representative's name in the table will highlight all their corresponding trade markers on the chart. This feature helps users visually assess timing clusters, such as multiple purchases before legislative action or major earnings events.
+	</p>
+	<p>
+		You can zoom in and out of the chart to narrow the time window, and the data in the tooltip table will automatically refresh to reflect the visible range. This makes it easy to focus on specific weeks or months of activity and detect trends that might be lost in broader views.
+	</p>
+	<p>
+		The tool is designed for transparency, accountability, and ease of access. Unlike many platforms that require paid accounts or email signups, HouseStockTrades.com is fully free to use. All data is publicly sourced and automatically updated, giving citizens and researchers an unbiased window into congressional trading behavior.
+	</p>
+	<p>
+		All trade data is sourced from the official <a href="https://disclosures-clerk.house.gov/" target="_blank" style="color:#9d96ff;">House Financial Disclosure portal</a>, and matched with archived historical stock prices to accurately plot event timing. This removes the need to manually search PDFs and cross-reference price histories.
+	</p>
+	<p>
+		Please remember that this site does not provide financial advice. It exists solely to make congressional financial activity more visible and understandable to the public. For more context on our mission or data practices, visit the <a href="/about.html" style="color:#9d96ff;">About</a> or <a href="/privacy-policy.html" style="color:#9d96ff;">Privacy Policy</a> pages.
+	</p>
+	<p>
+		For any questions, feedback, or correction requests, please <a href="/contact.html" style="color: #9d96ff;">contact us</a>. We welcome contributions, transparency partners, and new ideas to expand this platform's value.
+	</p>
+</section>
+
+	<footer style="background: #18181b; color: #a1a1aa; text-align: center; padding: 24px; border-top: 1px solid #2a2a2f; font-size: 14px;">
+		<nav style="margin-bottom: 12px; margin-left: 30vw;margin-right: 30vw;">
+			<a href="/contact.html" style="color: #9ca3af; margin: 0 12px; text-decoration: none;">Contact</a>
+			<a href="/privacy-policy.html" style="color: #9ca3af; margin: 0 12px; text-decoration: none;">Privacy Policy</a>
+			<a href="/terms-of-service.html" style="color: #9ca3af; margin: 0 12px; text-decoration: none;">Terms of Service</a>
+		</nav>
+		<p style="max-width: 720px; margin: 0 auto 8px; color: #71717a;">
+			HouseStockTrades.com is an independent website that aggregates publicly available financial disclosures filed by members of the U.S. House of Representatives. This website does not offer financial advice or endorsements of any kind.
+		</p>
+		<p style="color: #52525b;">
+			&copy; 2025 HouseStockTrades.com. All rights reserved.
+		</p>
+	</footer>
+
+<script>
 
 		function createElement(element_type, parent){
 			const el = document.createElement(element_type);

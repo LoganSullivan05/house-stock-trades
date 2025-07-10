@@ -217,6 +217,21 @@ window.addEventListener("load", function(){
 });
 </script>`;
 
+const article_footer = `
+	<footer style="background: #18181b; color: #a1a1aa; text-align: center; padding: 24px; border-top: 1px solid #2a2a2f; font-size: 14px;">
+		<nav style="margin-bottom: 12px; margin-left: 30vw;margin-right: 30vw;">
+			<a href="/contact.html" style="color: #9ca3af; margin: 0 12px; text-decoration: none;">Contact</a>
+			<a href="/privacy-policy.html" style="color: #9ca3af; margin: 0 12px; text-decoration: none;">Privacy Policy</a>
+			<a href="/terms-of-service.html" style="color: #9ca3af; margin: 0 12px; text-decoration: none;">Terms of Service</a>
+		</nav>
+		<p style="max-width: 720px; margin: 0 auto 8px; color: #71717a;">
+			HouseStockTrades.com is an independent website that aggregates publicly available financial disclosures filed by members of the U.S. House of Representatives. This website does not offer financial advice or endorsements of any kind.
+		</p>
+		<p style="color: #52525b;">
+			&copy; 2025 HouseStockTrades.com. All rights reserved.
+		</p>
+</footer>`;
+
 app.get('/articles_short/:slug.html', async (req, res) => {
 	res.status(410).send('Article removed.');
 });
@@ -240,6 +255,7 @@ app.get('/articles/:slug.html', async (req, res) => {
 		html = html.replace('</article>', `${recommendations}</article>`);
 		html = html.replace('</head>', `${adsense_str}${article_cookie_head}</head>`);
 		html = html.replace('</body>', `${article_cookie_body}</body>`);
+		html = html.replace(/<footer[\s\S]*?<\/footer>/i, article_footer);
 
 		res.send(html);
 	} catch (err) {

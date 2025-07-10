@@ -5,8 +5,7 @@
 	<meta name="viewport" content="width=device-width, initial-scale=1.0" />
 	<meta name="description" content="Learn more about our mission to provide transparency into congressional stock trading activity. Built for public accountability and data insight.">
 	<link rel="icon" href="/favicon.ico" />
-	<script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-2878584983232027" crossorigin="anonymous"></script>
-	<title>House Stock Trades - About</title>
+	<title>House Stock Trades - Contact</title>
 	<style>
 		body {
 			margin: 0;
@@ -69,7 +68,7 @@
 </head>
 <body>
 	<nav>
-		<div><strong>House Stock Trades - About</strong></div>
+		<div><strong>House Stock Trades</strong></div>
 		<div>
 			<a target="_blank" href="/index.html">Home</a>
 			<a target="_blank" href="/about.html">About</a>
@@ -79,29 +78,10 @@
 	</nav>
 
 	<main>
-		<h1>About This Project</h1>
-
+		<h1>Contact Us</h1>
 		<section>
-			<p><strong>House Stock Trades</strong> is a transparency-focused project that tracks and visualizes U.S. House Representatives' stock trades.</p>
-			<p>The site analyzes publicly available financial disclosure data from members of Congress and overlays that with historical stock prices to allow better insight into how trades align with political activity.</p>
-			<p>This can provide valuable insights into trades, as the House's disclosure website only provides PDFs that cannot be organized by date and lacks many features that would improve transparency.</p>
-		</section>
-
-		<section>
-			<h2>Purpose</h2>
-			<p>This project aims to highlight potential conflicts of interest and market timing by elected officials. By bringing visibility to this data, users can better analyze patterns, volume, and timing of political trades.</p>
-			<p>Only public stock trades are included - assets like real estate and bonds are excluded to keep the focus sharp and relevant.</p>
-		</section>
-
-		<section>
-			<h2>Data Sources</h2>
-			<p>All financial data is scraped or processed from official filings found on the <a target="_blank" href="https://disclosures-clerk.house.gov/FinancialDisclosure#Search">House Financial Disclosure portal</a>.</p>
-			<p>Stock prices are matched using archived market data for accuracy and aligned by date to track legislative influence.</p>
-		</section>
-
-		<section>
-			<h2>About the Developer</h2>
-			<p>This site was built as a personal side project to blend civic interest with web development. All source code for this project is available on my <a target="_blank" href="https://github.com/LoganSullivan05/house-stock-trades">GitHub repository</a>.</p>
+			<p>If you have questions, suggestions, or concerns related to HouseStockTrades.com, please contact us at:</p>
+			<p><strong>Email:</strong> <a href="mailto:contact@housestocktrades.com">contact@housestocktrades.com</a></p>
 		</section>
 	</main>
 
@@ -120,30 +100,30 @@
 	</footer>
 
 	<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/cookieconsent@3/build/cookieconsent.min.css" />
-<script src="https://cdn.jsdelivr.net/npm/cookieconsent@3/build/cookieconsent.min.js"></script>
-<script>
-window.addEventListener("load", function(){
-	window.cookieconsent.initialise({
+	<script src="https://cdn.jsdelivr.net/npm/cookieconsent@3/build/cookieconsent.min.js"></script>
+	<script>
+	window.addEventListener("load", function(){
+		window.cookieconsent.initialise({
 			palette: {
 				popup: { background: "#18181b", text: "#d4d4d8" },
 				button: { background: "#6366f1", text: "#ffffff" }
 			},
 			content: {
-			message: "We use cookies for personalized ads and analytics.",
-			dismiss: "Accept",
-			link: "Privacy Policy",
-			href: "/privacy-policy.html"
-		},
-		onInitialise: function (status) {
-			if (status == cookieconsent.status.allow) {
-				gtag('consent', 'update', {
-					'ad_storage': 'granted',
-					'analytics_storage': 'granted'
-				});
+				message: "We use cookies for personalized ads and analytics.",
+				dismiss: "Accept",
+				link: "Privacy Policy",
+				href: "/privacy-policy.html"
+			},
+			onInitialise: function (status) {
+				if (status == cookieconsent.status.allow) {
+					gtag('consent', 'update', {
+						'ad_storage': 'granted',
+						'analytics_storage': 'granted'
+					});
+				}
 			}
-		}
+		});
 	});
-});
-</script>
+	</script>
 </body>
 </html>
